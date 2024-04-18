@@ -51,7 +51,6 @@ const createPhotosCards = async () => {
                         <div class="photo-card-body">
                             <h3 class="photo.title">${photo.slug}</h3>
                             <p class="photo-id">Username: ${photo.cover_photo.user.username}</p>
-                            <button class="btn-photo-card">Click for More Info!</button>
                         </div>
                     </div>
                 </div>
@@ -121,7 +120,7 @@ const showChartInHeader = async (data) => {
         const header = document.querySelector('header');
 
         const htmlContent = data.map(photo => `
-            <div class="photo-card">
+            <div class="photo-chart">
                 <img src="${photo.urls.small}" alt="${photo.alt_description}">
                 <h2>${photo.alt_description}</h2> 
                 <div>
