@@ -161,6 +161,16 @@ const printCollectionPhotosCards = async (photo) => {
     }
 }
 
+const geturlTopicsPhotos = async (collectionId) => {
+    try {
+        const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=10`);
+        const data = await response.json();
+        console.log('data', data)
+        return data
+    } catch (error) {
+        console.log('error link html2', error)
+    }
+}
 
 // IMPRIMIR FOTOS EN EL BODY CON EVENTO CLICK EN EL LINK DE CADA CARTA
 const addCardClickEvent = () => {
@@ -168,25 +178,20 @@ const addCardClickEvent = () => {
     photoLinks.forEach((link) => {
         link.addEventListener('click', async (event) => {
             event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
-
             const collectionId = link.getAttribute('data-collection-id');
             // Redirigir a la colección correspondiente
-            window.location.href = 'http://127.0.0.1:5500/Dashboard_03/index2.html';
-            
+            // window.location.href = 'http://127.0.0.1:5500/index2.html';
+            try {
+                await addCardClickEvent()
+                const data = geturlTopicsPhotos(collectionId)
+                return data
+            } catch (error) {
+
+            }
+
         });
     });
 }
-
-const geturlTopicsPhotos = async (photo) => {
-    try {
-        const response = await fetch(`${URL_BASE});
-        const data = await response.json();
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 // IMPRIMIR COLLECION DE CARTAS DE UN TOPIC
 const printPhotosCards = async () => {
@@ -201,7 +206,6 @@ const printPhotosCards = async () => {
         console.log('error desde la impresion:', error)
     }
 }
-
 
 printPhotosCards()
 
