@@ -102,7 +102,7 @@ const createPhotosCards = async () => {
         topicData.forEach((photo) => {
             htmlCode += `
                 <div class="photo-card">
-                    <a href="#" class="photo-link" data-collection-id=${photo.slug}>
+                    <div class="photo-link" data-collection-id=${photo.slug}>
                         <div class="photo-img">
                             <img src="${photo.cover_photo.urls.small}" alt="${photo.title} image">
                         </div>
@@ -111,7 +111,7 @@ const createPhotosCards = async () => {
                             <p class="photo-id">Username: ${photo.cover_photo.user.username}</p>
                             <button class="btn-photo-card">Click for More Info!</button>
                         </div>
-                    </a>
+                    </div>
                 </div>
             `;
         });
@@ -147,67 +147,36 @@ const createCollectionPhotosCards = async (photo) => {
     }
 }
 
-// IMPRIMIR FOTOS DE CADA TOPIC CON LINK  DE SU CATEGORIA
-// const printCollectionPhotosCards = async (photo) => {
-//     try {
-//         // const getCollection = await getTopicsPhotos()
-//         const photosCards = await createCollectionPhotosCards(photo)
-//         console.log('printcolecctionphotoscards:', photosCards)
-
-//         digimonCardContainer.innerHTML = photosCards
-
-//     } catch (error) {
-//         console.log('Algo malio sal!', error)
-//     }
-// }
-
-// //3. IMPRIMIR FOTOS EN EL BODY CON EVENTO CLICK EN EL LINK DE CADA CARTA
-// const addCardClickEvent = () => {
-//     const photoLinks = document.querySelectorAll('.photo-link');
-//     photoLinks.forEach((link) => {
-//         link.addEventListener('click', async (event) => {
-//             event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
-
-//             const collectionId = link.getAttribute('data-collection-id');
-
-//             // Redirigir a la colección correspondiente
-//             window.location.href = `${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=30`;
-//         });
-//     });
-// }
-
-// CREAR COLECCION CARTAS DE FOTOS DE UN TOPIC
+//IMPRIMIR FOTOS DE CADA TOPIC CON LINK  DE SU CATEGORIA
 const printCollectionPhotosCards = async (photo) => {
     try {
-        const photoData = await getTopicsPhotos(photo);
-        let htmlCode = `
-            <div class="one-photo-card">
-                <div class="one-photo-header">
-                    <div class="one-photo-img">
-                        <img src="${photoData.urls.regular}" alt="${photoData.id}">
-                    </div>
-                    <h2 class="one-user-name">${photoData.user}</h2>
-                    <p class="one-user-id">ID: ${photoData.user}</p>
-                </div>
-            </div>
-        `;
-        photoSelected.innerHTML = htmlCode;
-    } catch (error) {
-        console.log('error createcollectionphotoscards:', error);
-    }
-};
+        // const getCollection = await getTopicsPhotos()
+        const photosCards = await createCollectionPhotosCards(photo)
+        console.log('printcolecctionphotoscards:', photosCards)
 
-// IMPRIMIR CARTAS DE CADA TOPIC CON EVENTO CLICK EN LA CASILLA DE CADA CARTA
+        digimonCardContainer.innerHTML = photosCards
+
+    } catch (error) {
+        console.log('Algo malio sal!', error)
+    }
+}
+
+
+// IMPRIMIR FOTOS EN EL BODY CON EVENTO CLICK EN EL LINK DE CADA CARTA
 const addCardClickEvent = () => {
     const photoLinks = document.querySelectorAll('.photo-link');
     photoLinks.forEach((link) => {
         link.addEventListener('click', async (event) => {
-            event.preventDefault();
+            event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
+
             const collectionId = link.getAttribute('data-collection-id');
-            printCollectionPhotosCards(collectionId);
+
+            // Redirigir a la colección correspondiente
+            window.location.href = `${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=30`;
         });
     });
-};
+}
+
 
 // IMPRIMIR COLLECION DE CARTAS DE UN TOPIC
 const printPhotosCards = async () => {
