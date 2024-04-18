@@ -179,19 +179,38 @@ const addCardClickEvent = () => {
         link.addEventListener('click', async (event) => {
             event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
             const collectionId = link.getAttribute('data-collection-id');
-            // Redirigir a la colección correspondiente
-            // window.location.href = 'http://127.0.0.1:5500/index2.html';
+            
             try {
-                await addCardClickEvent()
-                const data = geturlTopicsPhotos(collectionId)
-                return data
+                // Obtener la información de la colección desde la API de Unsplash con el idioma español
+                const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=10`);
+                const data = await response.json();
+                
+                // Abrir una nueva pestaña y mostrar los datos
+                const newWindow = window.open('', '_blank');
+                if (newWindow) {
+                    // Crear el HTML para mostrar los datos
+                    const htmlContent = data.map(photo => `
+                        <div class="photo-card">
+                            <img src="${photo.urls.small}" alt="${photo.alt_description}">
+                            <h2>${photo.user.name}</h2>
+                        </div>
+                    `).join('');
+                    
+                    // Escribir los datos en la nueva pestaña
+                    newWindow.document.write(`<html><head><title>Fotos del tema</title></head><body>${htmlContent}</body></html>`);
+                    newWindow.document.close();
+                } else {
+                    // Si el navegador bloquea la apertura de ventanas emergentes
+                    console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
+                }
             } catch (error) {
-
+                console.error('Error al obtener la información de la colección:', error);
             }
-
         });
     });
 }
+
+
 
 // IMPRIMIR COLLECION DE CARTAS DE UN TOPIC
 const printPhotosCards = async () => {
