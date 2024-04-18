@@ -1,7 +1,7 @@
 
 const URL_BASE = 'https://api.unsplash.com/'
 const clientId = '?client_id=7Ykq1vbUh9HsKupp1h0id27L14jRo2r8F5zJQ5gBF_Q'
-const ctx = document.getElementById('myChart');
+
 
 
 // VARIABLES DOM
@@ -23,7 +23,7 @@ const getListTopics = async () => {
     }
 }
 
-// OBTENER COLECCION DE FOTOS DE CADA TOPIC
+//OBTENER COLECCION DE FOTOS DE CADA TOPIC
 const getTopicsPhotos = async (photo) => {
     try {
         const response = await fetch(`${URL_BASE}topics/${photo}/photos${clientId}&per_page=30`);
@@ -34,7 +34,7 @@ const getTopicsPhotos = async (photo) => {
     }
 }
 
-// CREAR CARTAS FOTOS DE CADA TOPIC
+//CREAR CARTAS FOTOS DE CADA TOPIC
 const createPhotosCards = async () => {
     try {
         const topicData = await getListTopics();
@@ -65,7 +65,7 @@ const createPhotosCards = async () => {
     }
 }
 
-// CREAR COLECCION FOTOS DE UN TOPIC ESPECIFICO
+//CREAR COLECCION FOTOS DE UN TOPIC ESPECIFICO
 const createCollectionPhotosCards = async (photo) => {
     try {
         const photoData = await getTopicsPhotos(photo)
@@ -103,18 +103,7 @@ const printCollectionPhotosCards = async (photo) => {
     }
 }
 
-const geturlTopicsPhotos = async (collectionId) => {
-    try {
-        const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=10`);
-        const data = await response.json();
-        console.log('data', data)
-        return data
-    } catch (error) {
-        console.log('error link html2', error)
-    }
-}
-
-// Función para obtener los datos de la colección de Unsplash
+//Función para obtener los datos de la colección de Unsplash
 const fetchCollectionData = async (collectionId) => {
     try {
         const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=1`);
@@ -126,20 +115,47 @@ const fetchCollectionData = async (collectionId) => {
     }
 }
 
-
-//OBTENER GRAFICO DE DATOS
-const chartPhotos = async () => {
-    // Obtiene los datos de la colección
-    const data = await fetchCollectionData();
+//Función para mostrar el gráfico en el header de la página
+const showChartInHeader = async (data) => {
     try {
-        // Crea el gráfico
+        const header = document.querySelector('header');
+
+        const htmlContent = data.map(photo => `
+            <div class="photo-card">
+                <img src="${photo.urls.small}" alt="${photo.alt_description}">
+                <h2>${photo.alt_description}</h2> 
+                <div>
+                    <canvas class="myChart"></canvas>
+                </div>
+            </div>
+        `).join('');
+
+        header.innerHTML = htmlContent;
+
+        const ctx = header.querySelector('.myChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['LIKES', 'DESCARGAS', 'TOTAL_PHOTOS', 'ASD', 'Purple'],
                 datasets: [{
                     label: '# of Votes',
-                    data: data, // Utiliza los datos obtenidos de fetchCollectionData
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
                     borderWidth: 1
                 }]
             },
@@ -152,33 +168,11 @@ const chartPhotos = async () => {
             }
         });
     } catch (error) {
-        // Maneja cualquier error que ocurra durante la creación del gráfico
-        console.error('Error creating chart:', error);
+        console.error('Error al mostrar el gráfico en el header:', error);
     }
-}
+};
 
-// Función para mostrar los datos de la colección en una nueva pestaña
-const openNewTabWithData = (data) => {
-    const newWindow = window.open('', '_blank');
-    try {
-
-        const htmlContent = data.map(photo => `
-            <div class="photo-card">
-                <img src="${photo.urls.small}" alt="${photo.alt_description}">
-                <h2>${photo.alt_description}</h2>
-            </div>
-            
-        `, chartPhotos(data)).join('');
-
-        newWindow.document.write(`<html><head><title>Fotos del tema</title></head><body>${htmlContent}</body></html>`);
-        newWindow.document.close();
-
-    } catch {
-        console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
-    }
-}
-
-// Función para manejar el evento de clic en los enlaces de las fotos
+//Función para manejar el evento de clic en los enlaces de las fotos
 const addCardClickEvent = () => {
     const photoLinks = document.querySelectorAll('.photo-link');
     photoLinks.forEach((link) => {
@@ -188,7 +182,7 @@ const addCardClickEvent = () => {
 
             try {
                 const data = await fetchCollectionData(collectionId);
-                openNewTabWithData(data);
+                showChartInHeader(data); // Pasar los datos a showChartInHeader
 
             } catch (error) {
                 console.error('Error al manejar el evento de clic:', error);
@@ -197,13 +191,7 @@ const addCardClickEvent = () => {
     });
 }
 
-// Llamar a la función para agregar el evento de clic en las tarjetas de fotos
-addCardClickEvent();
-
-
-
-
-// IMPRIMIR COLLECION DE CARTAS DE UN TOPIC
+//IMPRIMIR COLLECION DE CARTAS DE UN TOPIC
 const printPhotosCards = async () => {
     try {
         const photosCards = await createPhotosCards()
@@ -218,6 +206,10 @@ const printPhotosCards = async () => {
 }
 
 printPhotosCards()
+
+
+
+
 
 
 
