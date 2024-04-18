@@ -172,43 +172,57 @@ const geturlTopicsPhotos = async (collectionId) => {
     }
 }
 
-// IMPRIMIR FOTOS EN EL BODY CON EVENTO CLICK EN EL LINK DE CADA CARTA
+// Función para obtener los datos de la colección de Unsplash
+const fetchCollectionData = async (collectionId) => {
+    try {
+        const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=1`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener los datos de la colección:', error);
+        throw error;
+    }
+}
+
+// Función para mostrar los datos de la colección en una nueva pestaña
+const openNewTabWithData = (data) => {
+    const newWindow = window.open('', '_blank');
+    if (newWindow) {
+        const htmlContent = data.map(photo => `
+            <div class="photo-card">
+                <img src="${photo.urls.small}" alt="${photo.alt_description}">
+                <h2>${photo.alt_description}</h2>
+            </div>
+        `).join('');
+
+        newWindow.document.write(`<html><head><title>Fotos del tema</title></head><body>${htmlContent}</body></html>`);
+        newWindow.document.close();
+    } else {
+        console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
+    }
+}
+
+// Función para manejar el evento de clic en los enlaces de las fotos
 const addCardClickEvent = () => {
     const photoLinks = document.querySelectorAll('.photo-link');
     photoLinks.forEach((link) => {
         link.addEventListener('click', async (event) => {
             event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
             const collectionId = link.getAttribute('data-collection-id');
-            
+
             try {
-                // Obtener la información de la colección desde la API de Unsplash con el idioma español
-                const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=10`);
-                const data = await response.json();
-                
-                // Abrir una nueva pestaña y mostrar los datos
-                const newWindow = window.open('', '_blank');
-                if (newWindow) {
-                    // Crear el HTML para mostrar los datos
-                    const htmlContent = data.map(photo => `
-                        <div class="photo-card">
-                            <img src="${photo.urls.small}" alt="${photo.alt_description}">
-                            <h2>${photo.user.name}</h2>
-                        </div>
-                    `).join('');
-                    
-                    // Escribir los datos en la nueva pestaña
-                    newWindow.document.write(`<html><head><title>Fotos del tema</title></head><body>${htmlContent}</body></html>`);
-                    newWindow.document.close();
-                } else {
-                    // Si el navegador bloquea la apertura de ventanas emergentes
-                    console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
-                }
+                const data = await fetchCollectionData(collectionId);
+                openNewTabWithData(data);
             } catch (error) {
-                console.error('Error al obtener la información de la colección:', error);
+                console.error('Error al manejar el evento de clic:', error);
             }
         });
     });
 }
+
+// Llamar a la función para agregar el evento de clic en las tarjetas de fotos
+addCardClickEvent();
+
 
 
 
