@@ -1,5 +1,7 @@
+
 const URL_BASE = 'https://api.unsplash.com/'
 const clientId = '?client_id=7Ykq1vbUh9HsKupp1h0id27L14jRo2r8F5zJQ5gBF_Q'
+const ctx = document.getElementById('myChart');
 
 
 // VARIABLES DOM
@@ -184,23 +186,61 @@ const fetchCollectionData = async (collectionId) => {
     }
 }
 
+
+//OBTENER GRAFICO DE DATOS
+const chartPhotos = async () => {
+    // Obtiene los datos de la colección
+    const data = await fetchCollectionData();
+    try {
+        // Crea el gráfico
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: data, // Utiliza los datos obtenidos de fetchCollectionData
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        // Maneja cualquier error que ocurra durante la creación del gráfico
+        console.error('Error creating chart:', error);
+    }
+}
+
 // Función para mostrar los datos de la colección en una nueva pestaña
 const openNewTabWithData = (data) => {
     const newWindow = window.open('', '_blank');
-    if (newWindow) {
+    try {
+
         const htmlContent = data.map(photo => `
             <div class="photo-card">
                 <img src="${photo.urls.small}" alt="${photo.alt_description}">
                 <h2>${photo.alt_description}</h2>
             </div>
-        `).join('');
+            
+        `, chartPhotos(data)).join('');
 
         newWindow.document.write(`<html><head><title>Fotos del tema</title></head><body>${htmlContent}</body></html>`);
         newWindow.document.close();
-    } else {
+
+    } catch {
         console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
     }
 }
+
+
+
+
 
 // Función para manejar el evento de clic en los enlaces de las fotos
 const addCardClickEvent = () => {
@@ -213,6 +253,7 @@ const addCardClickEvent = () => {
             try {
                 const data = await fetchCollectionData(collectionId);
                 openNewTabWithData(data);
+
             } catch (error) {
                 console.error('Error al manejar el evento de clic:', error);
             }
