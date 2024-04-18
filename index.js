@@ -170,11 +170,21 @@ const addCardClickEvent = () => {
             event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
 
             const collectionId = link.getAttribute('data-collection-id');
-
             // Redirigir a la colección correspondiente
-            window.location.href = `${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=30`;
+            window.location.href = 'http://127.0.0.1:5500/Dashboard_03/index2.html';
+            
         });
     });
+}
+
+const geturlTopicsPhotos = async (photo) => {
+    try {
+        const response = await fetch(`${URL_BASE});
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 
