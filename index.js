@@ -10,55 +10,6 @@ let photoSelected = document.querySelector('.photo-selected')
 let inputPhoto = document.querySelector(".search-photo");
 let searchButton = document.querySelector(".search-button");
 
-
-// OBTENER TODAS LAS FOTOS
-const getAllPhotos = async () => {
-    try {
-        const response = await fetch(`${URL_BASE}photos${clientId}&per_page=30`);
-        const data = await response.json();
-
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-//OBTENER ESTADISTICAS DEL USUARIO
-const getStatisticsUser = async (userName) => {
-    try {
-        const response = await fetch(`${URL_BASE}/users/${userName}/statistics${clientId}`);
-        const data = await response.json();
-
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// OBTENER LISTA DE COLECCIONES  (????????????????)
-const getListCollection = async () => {
-    try {
-        const response = await fetch(`${URL_BASE}/collections${clientId}`);
-        const data = await response.json();
-
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// OBTENER COLECCION DE FOTOS DE UN USUARIO (?????????????)
-const getCollectionsPhotos = async (userId) => {
-    try {
-        const response = await fetch(`${URL_BASE}/collections/${userId}/photos${clientId}`);
-        const data = await response.json();
-
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 //OBTENER LISTA DE TOPICS 
 const getListTopics = async () => {
     try {
@@ -80,17 +31,6 @@ const getTopicsPhotos = async (photo) => {
         return data
     } catch (error) {
         console.log(error);
-    }
-}
-
-// BUSCAR REFERENCIA DE UN USUARIO O FOTO (BUSCADOR)
-const searchUsers = async (terms) => {
-    try {
-        const response = await fetch(`${URL_BASE}/search/photos${clientId}&per_page=30&query=${terms}`);
-        const data = await response.json();
-        return data
-    } catch (error) {
-        console.log('error unproducto:', error)
     }
 }
 
@@ -237,10 +177,6 @@ const openNewTabWithData = (data) => {
         console.error('No se pudo abrir la nueva ventana. Asegúrate de que los bloqueadores de ventanas emergentes estén desactivados.');
     }
 }
-
-
-
-
 
 // Función para manejar el evento de clic en los enlaces de las fotos
 const addCardClickEvent = () => {
