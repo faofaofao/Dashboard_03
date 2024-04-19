@@ -44,13 +44,9 @@ const createPhotosCards = async () => {
         topicData.forEach((photo) => {
             htmlCode += `
                 <div class="photo-card">
-                    <div class="photo-link" data-collection-id=${photo.slug}>
-                        <div class="photo-img">
+                    <div class="photo-link" data-collection-id="${photo.slug}">
+                        <div class="photo-img" data-collection-id="${photo.slug}">
                             <img src="${photo.cover_photo.urls.small}" alt="${photo.title} image">
-                        </div>
-                        <div class="photo-card-body">
-                            <h3 class="photo.title">${photo.slug}</h3>
-                            <p class="photo-id">Username: ${photo.cover_photo.user.username}</p>
                         </div>
                     </div>
                 </div>
@@ -74,12 +70,9 @@ const createCollectionPhotosCards = async (photo) => {
                 <div class = "one-photo-header">
                     <div class="one-photo-img">
                         <img src="${photoData.urls.small}" alt="${photoData.id}">
-                     
-                   
                     </div>
                     <h2 class = "one-user-name">${photoData.user}</h2>
                     <p class="one-user-id> ID: ${photoData.user} </p>
-                  
         `
         return htmlCode
 
@@ -117,9 +110,10 @@ const fetchCollectionData = async (collectionId) => {
 //Función para mostrar el gráfico en el header de la página
 const showChartInHeader = async (data) => {
     try {
-        const header = document.querySelector('header');
+        const header = document.querySelector('.chart-photos');
 
         const htmlContent = data.map(photo => `
+        <section>    
             <div class="photo-chart">
                 <img src="${photo.urls.small}" alt="${photo.alt_description}">
                 <h2>${photo.alt_description}</h2> 
@@ -127,6 +121,7 @@ const showChartInHeader = async (data) => {
                     <canvas class="myChart"></canvas>
                 </div>
             </div>
+        </section>  
         `).join('');
 
         header.innerHTML = htmlContent;
