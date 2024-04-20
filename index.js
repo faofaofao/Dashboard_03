@@ -15,8 +15,6 @@ const getListTopics = async () => {
     try {
         const response = await fetch(`${URL_BASE}/topics${clientId}`);
         const data = await response.json();
-        console.log('getlisttopics:', data)
-
         return data
     } catch (error) {
         console.log(error);
@@ -24,15 +22,15 @@ const getListTopics = async () => {
 }
 
 //OBTENER COLECCION DE FOTOS DE CADA TOPIC
-const getTopicsPhotos = async (photo) => {
-    try {
-        const response = await fetch(`${URL_BASE}topics/${photo}/photos${clientId}&per_page=30`);
-        const data = await response.json();
-        return data
-    } catch (error) {
-        console.log(error);
-    }
-}
+// const getTopicsPhotos = async (photo) => {
+//     try {
+//         const response = await fetch(`${URL_BASE}topics/${photo}/photos${clientId}&per_page=30`);
+//         const data = await response.json();
+//         return data
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 //CREAR CARTAS FOTOS DE CADA TOPIC
 const createPhotosCards = async () => {
@@ -61,44 +59,44 @@ const createPhotosCards = async () => {
 }
 
 //CREAR COLECCION FOTOS DE UN TOPIC ESPECIFICO
-const createCollectionPhotosCards = async (photo) => {
-    try {
-        const photoData = await getTopicsPhotos(photo)
+// const createCollectionPhotosCards = async (photo) => {
+//     try {
+//         const photoData = await getTopicsPhotos(photo)
 
-        let htmlCode = `
-            <div class = "one-photo-card">
-                <div class = "one-photo-header">
-                    <div class="one-photo-img">
-                        <img src="${photoData.urls.small}" alt="${photoData.id}">
-                    </div>
-                    <h2 class = "one-user-name">${photoData.user}</h2>
-                    <p class="one-user-id> ID: ${photoData.user} </p>
-        `
-        return htmlCode
+//         let htmlCode = `
+//             <div class = "one-photo-card">
+//                 <div class = "one-photo-header">
+//                     <div class="one-photo-img">
+//                         <img src="${photoData.urls.small}" alt="${photoData.id}">
+//                     </div>
+//                     <h2 class = "one-user-name">${photoData.user}</h2>
+//                     <p class="one-user-id> ID: ${photoData.user} </p>
+//         `
+//         return htmlCode
 
-    } catch (error) {
-        console.log('error createcollectionphotoscards:', error)
-    }
-}
+//     } catch (error) {
+//         console.log('error createcollectionphotoscards:', error)
+//     }
+// }
 
 //IMPRIMIR FOTOS DE CADA TOPIC CON LINK  DE SU CATEGORIA
-const printCollectionPhotosCards = async (photo) => {
-    try {
-        // const getCollection = await getTopicsPhotos()
-        const photosCards = await createCollectionPhotosCards(photo)
-        console.log('printcolecctionphotoscards:', photosCards)
+// const printCollectionPhotosCards = async (photo) => {
+//     try {
+//         // const getCollection = await getTopicsPhotos()
+//         const photosCards = await createCollectionPhotosCards(photo)
 
-        digimonCardContainer.innerHTML = photosCards
 
-    } catch (error) {
-        console.log('Algo malio sal!', error)
-    }
-}
+//         photosCardsContainerCardContainer.innerHTML = photosCards
+
+//     } catch (error) {
+//         console.log('Algo malio sal!', error)
+//     }
+// }
 
 //Función para obtener los datos de la colección de Unsplash
 const fetchCollectionData = async (collectionId) => {
     try {
-        const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=1`);
+        const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=4`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -113,27 +111,31 @@ const showChartInHeader = async (data) => {
         const header = document.querySelector('.chart-photos');
 
         const htmlContent = data.map(photo => `
-        <section>    
             <div class="photo-chart">
                 <img src="${photo.urls.small}" alt="${photo.alt_description}">
-                <h2>${photo.alt_description}</h2> 
-                <div>
-                    <canvas class="myChart"></canvas>
-                </div>
             </div>
-        </section>  
         `).join('');
 
-        header.innerHTML = htmlContent;
+        header.innerHTML = htmlContent + `    <div>
+        <canvas class="myChart"></canvas>
+    </div>`;
+
 
         const ctx = header.querySelector('.myChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['LIKES', 'DESCARGAS', 'TOTAL_PHOTOS', 'ASD', 'Purple'],
+                labels: [`LIKES`, 'DESCARGAS', 'TOTAL_PHOTOS', 'VIEWERS'],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+
+                    label: 'GRAFICO DATOS CATEGORIA',
+
+                    data: [
+                        data[0].likes,
+                        data[0].width,
+                        data[0].user.total_photos,
+                        data[0].height,
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -176,7 +178,8 @@ const addCardClickEvent = () => {
 
             try {
                 const data = await fetchCollectionData(collectionId);
-                showChartInHeader(data); // Pasar los datos a showChartInHeader
+
+                showChartInHeader(data);
 
             } catch (error) {
                 console.error('Error al manejar el evento de clic:', error);
