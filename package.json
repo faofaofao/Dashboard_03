@@ -1,0 +1,21 @@
+{
+  "name": "dashboard03",
+  "version": "1.0.0",
+  "description": "En el siguiente proyecto veremos la utilización y el manejo de la información de una Api seleccionada.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faofaofao/Dashboard_03.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/faofaofao/Dashboard_03/issues"
+  },
+  "homepage": "https://github.com/faofaofao/Dashboard_03#readme"
+}
