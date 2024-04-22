@@ -19,7 +19,7 @@ export const printChartInHeader = (data) => {
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [`LIKES`, 'DESCARGAS', 'TOTAL_PHOTOS', 'VIEWERS'],
+                labels: ['ME GUSTA', 'DESCARGAS', 'IMAGENES', 'VISUALIZACIONES'],
                 datasets: [{
                     label: 'GRAFICO DATOS CATEGORIA',
                     data: [
@@ -33,25 +33,20 @@ export const printChartInHeader = (data) => {
                         'rgba(255, 153, 0, 0.2)',
                         'rgba(51, 153, 102, 0.2)',
                         'rgba(153, 0, 51, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
                     ],
                     borderColor: [
                         'rgba(0, 102, 204, 1)',
                         'rgba(255, 153, 0, 1)',
                         'rgba(51, 153, 102, 1)',
                         'rgba(153, 0, 51, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
                     ],
-                    borderWidth: 1
+                    hoverOffset: 4
                 }]
             },
             options: {
                 scales: {
                     y: {
-                        type: 'logarithmic',
-                        beginAtZero: false
+                        beginAtZero: true
                     }
                 }
             }

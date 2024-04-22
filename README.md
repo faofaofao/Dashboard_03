@@ -1,6 +1,7 @@
 # Dasboarh Api de imágenes
 
 En el siguiente proyecto veremos la utilización y el manejo de la información de una Api seleccionada.
+El usuario puede seleccionar uno de los topicos que se muestran en la página, y se le mostrarán las imágenes que se encuentran en la Api en formato carrusel. Al mismo tiempo se le proporcionará información relevante de la misma, como lo son la cantidad de imágenes que contiene el tópico,número de descargas, el total de fotos contenidas, y cuantas personas han entrado al tópico a ver las imágenes. 
 
 ## Comenzando
 
