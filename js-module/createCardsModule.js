@@ -1,8 +1,7 @@
-let photosCardsContainer = document.querySelector(".wrapper");
-import {getListTopics} from "./fetchApi.js";
-import {addCardClickEvent} from "./infoTopics.js";
+import { getListTopics } from "./getListTopicsModule.js"
 
 
+// CREAR CARTAS CON IMAGEN DE CADA TOPICS
 export const createPhotosCards = async () => {
     try {
         const topicData = await getListTopics();
@@ -27,19 +26,4 @@ export const createPhotosCards = async () => {
         console.log('createCards', error)
     }
 }
-
-export const printPhotosCards = async () => {
-    try {
-        const photosCards = await createPhotosCards()
-
-        photosCardsContainer.innerHTML = photosCards
-
-        addCardClickEvent()
-
-    } catch (error) {
-        console.log('error desde la impresion:', error)
-    }
-}
-
-printPhotosCards()
 

@@ -9,6 +9,7 @@ let photosCardsContainer = document.querySelector(".wrapper");
 const getListTopics = async () => {
     try {
         const response = await fetch(`${URL_BASE}/topics${clientId}`);
+
         const data = await response.json();
         return data
     } catch (error) {
@@ -43,11 +44,11 @@ const createPhotosCards = async () => {
 }
 
 //Función para obtener los datos de la colección de Unsplash
-const fetchCollectionData = async (collectionId) => {
+const getCollectionTopics = async (collectionId) => {
     try {
         const response = await fetch(`${URL_BASE}topics/${collectionId}/photos${clientId}&per_page=6`);
-        const data = await response.json();
 
+        const data = await response.json();
         // Agregar propiedad 'active' al primer elemento de 'data'
         if (data.length > 0) {
             data[0].active = true;
@@ -62,7 +63,7 @@ const fetchCollectionData = async (collectionId) => {
 
 
 // Función para mostrar solo las imágenes en el header
-const showImagesInHeader = (data) => {
+const printImagesInHeader = (data) => {
     try {
         const header = document.querySelector('.carousel-inner');
 
@@ -83,16 +84,15 @@ const showImagesInHeader = (data) => {
 
 
 // Función para mostrar solo el gráfico en el header
-const showChartInHeader = (data) => {
+const printChartInHeader = (data) => {
     try {
 
         //Se agregan cantidades para que en el gráfico sea más visible la cantidad
-        const likes = data[0].likes;
-        const multipliedLikes = likes +500 * 2
+        const likes = data[0].likes
+        const multipliedLikes = likes + 500 * 2
         const total_photos = data[0].user.total_photos;
-        const user_total_photos = total_photos +400 * 2
+        const user_total_photos = total_photos + 400 * 2
         const header = document.querySelector('.chart-graphys');
-
         // Eliminar contenido anterior
         header.innerHTML = '';
 
@@ -103,41 +103,39 @@ const showChartInHeader = (data) => {
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [`LIKES`, 'DESCARGAS', 'TOTAL_PHOTOS', 'VIEWERS'],
-                datasets: [{
-                    label: 'GRAFICO DATOS CATEGORIA',
-                    data: [
-                        data[0].multipliedLikes = multipliedLikes,
-                        data[0].width,
-                        data[0].user_total_photos = user_total_photos,
-                        data[0].height,
-                    ],
-                    backgroundColor: [
-                        'rgba(0, 102, 204, 0.2)',
-                        'rgba(255, 153, 0, 0.2)',
-                        'rgba(51, 153, 102, 0.2)',
-                        'rgba(153, 0, 51, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 102, 204, 1)',
-                        'rgba(255, 153, 0, 1)',
-                        'rgba(51, 153, 102, 1)',
-                        'rgba(153, 0, 51, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+                labels: [
+                    'ME GUSTA', 'DESCARGAS', 'FOTOS', 'VISITAS',
+                ],
+                datasets: [
+                    {
+                        label: "DATOS CATEGORIA SELECCIONADA",
+                        data: [
+                            data[0].multipliedLikes = multipliedLikes,
+                            data[0].width,
+                            data[0].user_total_photos = user_total_photos,
+                            data[0].height,
+                        ],
+
+                        backgroundColor: [
+                            'rgba(0, 102, 204, 0.2)',
+                            'rgba(255, 153, 0, 0.2)',
+                            'rgba(51, 153, 102, 0.2)',
+                            'rgba(153, 0, 51, 0.2)',
+
+                        ],
+                        borderColor: [
+                            'rgba(0, 102, 204, 1)',
+                            'rgba(255, 153, 0, 1)',
+                            'rgba(51, 153, 102, 1)',
+                            'rgba(153, 0, 51, 1)',
+
+                        ],
+                        hoverOffset: 4
+                    }]
             },
             options: {
-                scales: {
-                    y: {
-                        type: 'logarithmic',
-                        beginAtZero: false
-                    }
-                }
+
+                data: data,
             }
         });
     } catch (error) {
@@ -154,13 +152,13 @@ const addCardClickEvent = () => {
             const collectionId = link.getAttribute('data-collection-id');
 
             try {
-                const data = await fetchCollectionData(collectionId);
+                const data = await getCollectionTopics(collectionId);
 
                 // Mostrar solo las imágenes
-                showImagesInHeader(data);
-                
+                printImagesInHeader(data);
+
                 // Mostrar solo el gráfico
-                showChartInHeader(data);
+                printChartInHeader(data);
 
                 // Mostrar las flechas del carrusel
                 const prevButton = document.querySelector('.carousel-control-prev');
