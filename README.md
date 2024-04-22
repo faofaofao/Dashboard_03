@@ -10,10 +10,10 @@ Estas instrucciones te guiarán para obetener una copia del proyecto en tu máqu
 
 Que cosas necesitas para instalar el proyecto en tu computadora :+1:
 
-+Visual Studio Code
-+Cuenta en Github
-+Instalación de Node
-+Almacenamiento suficiente en tu computadora
++ Visual Studio Code
++ Cuenta en Github
++ Instalación de Node
++ Almacenamiento suficiente en tu computadora
 
 ### Instalación
 
