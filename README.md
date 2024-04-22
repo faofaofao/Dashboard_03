@@ -34,7 +34,7 @@ En el navegador escribe localhost:3000 y espera a que se abra la página.
 ## Construido con
 
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [Node](https://nodejs.org/en/download)
+* [Node.js](https://nodejs.org/en/download)
 * [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 * [Chart.js](https://www.chartjs.org/docs/latest/)
 
