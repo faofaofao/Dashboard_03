@@ -21,7 +21,7 @@ export const printChartInHeader = (data) => {
             data: {
                 labels: ['ME GUSTA', 'DESCARGAS', 'IMAGENES', 'VISUALIZACIONES'],
                 datasets: [{
-                    label: 'GRAFICO DATOS CATEGORIA',
+                    label: 'DATOS CATEGORIA',
                     data: [
                         data[0].multipliedLikes = multipliedLikes,
                         data[0].width,

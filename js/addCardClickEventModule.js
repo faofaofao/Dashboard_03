@@ -24,7 +24,7 @@ export const addCardClickEvent = () => {
                 const nextButton = document.querySelector('.carousel-control-next');
                 prevButton.classList.remove('d-none');
                 nextButton.classList.remove('d-none');
-                console.log(prevButton, nextButton);
+
 
                 // Desplazarse a un elemento específico
                 const targetElement = document.querySelector('.carousel-inner');
